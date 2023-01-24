@@ -30,8 +30,9 @@ sqlx = { version = "0.6.2", features = [
 ] }
 tokio = { version = "1.24.2", features = ["full"] }
 tower = "0.4.13"
+tower-http = { version = "0.3.5", features = ["trace"] }
 tracing = "0.1.37"
-tracing-subscriber = "0.3.16"
+tracing-subscriber = { version = "0.3.16", features = ["json"] }
 utoipa = { versino = "2.4.2", features = [
   "axum_extras",
   "json",
