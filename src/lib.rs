@@ -1,6 +1,7 @@
 pub mod db;
 pub mod docs;
 pub mod trace;
+pub mod user;
 
 pub mod index {
     use axum::response::IntoResponse;
