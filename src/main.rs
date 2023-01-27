@@ -8,13 +8,22 @@ use tracing::{info, Level};
 use utoipa::OpenApi;
 use utoipa_swagger_ui::SwaggerUi;
 
-use modules::{docs::ApiDoc, index::health_check, trace::init_tracer};
+use modules::{
+    db::{apply_migrations, connect_to_db},
+    docs::ApiDoc,
+    index::health_check,
+    trace::init_tracer,
+};
 
 #[tokio::main]
 async fn main() -> Result<(), axum::BoxError> {
     dotenv().ok();
 
     init_tracer();
+
+    let pool = connect_to_db(5).await?;
+
+    apply_migrations(&pool).await?;
 
     let app = Router::new()
         .merge(SwaggerUi::new("/docs").url("/docs/openapi.json", ApiDoc::openapi()))
