@@ -1,4 +1,5 @@
 pub mod docs;
+pub mod trace;
 
 pub mod index {
     use axum::response::IntoResponse;
