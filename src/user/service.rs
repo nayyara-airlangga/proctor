@@ -14,12 +14,12 @@ pub struct UserService {
 
 impl UserService {
     pub fn new(repository: UserRepository) -> Self {
-        let mut hash_config = argon2::Config::default();
-        hash_config.variant = argon2::Variant::Argon2id;
-
         Self {
             repository,
-            hash_config,
+            hash_config: argon2::Config {
+                variant: argon2::Variant::Argon2id,
+                ..Default::default()
+            },
         }
     }
 
@@ -54,8 +54,8 @@ impl UserService {
         body.validate().map_err(|err| {
             RegisterUserError::BadRequestError(
                 err.into_errors()
-                    .into_iter()
-                    .map(|(code, _)| code.to_string())
+                    .into_keys()
+                    .map(|code| code.to_string())
                     .collect::<Vec<String>>(),
             )
         })?;

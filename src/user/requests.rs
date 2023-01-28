@@ -2,14 +2,17 @@ use std::borrow::Cow;
 
 use fancy_regex::Regex;
 use serde::Deserialize;
+use utoipa::ToSchema;
 use validator::{Validate, ValidationError};
 
-#[derive(Deserialize, Validate)]
+#[derive(Deserialize, ToSchema, Validate)]
 pub struct RegisterUserRequest {
     #[validate(email)]
+    #[schema(example = "example@email.com")]
     pub email: String,
 
     #[validate(custom = "validate_password")]
+    #[schema(example = "Very string and secure password")]
     pub password: String,
 }
 

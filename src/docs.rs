@@ -6,10 +6,23 @@ use utoipa::{
     Modify, OpenApi,
 };
 
-pub use crate::index;
+pub use crate::{common, index, user};
 
 #[derive(OpenApi)]
-#[openapi(paths(index::health_check), modifiers(&ApiInfo, &ApiBearerAuth))]
+#[openapi(
+    paths(
+        index::health_check,
+        user::handlers::register_user
+    ),
+    modifiers(&ApiInfo, &ApiBearerAuth),
+    components(
+        schemas(
+            common::errors::ApiErrors,
+            user::requests::RegisterUserRequest,
+            user::responses::RegisterUserResponse,
+        )
+    )
+)]
 pub struct ApiDoc;
 
 pub struct ApiInfo;
