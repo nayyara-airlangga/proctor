@@ -19,10 +19,8 @@ impl UserRepository {
         password_hash: impl AsRef<str>,
     ) -> Result<User> {
         let query = r#"
-        PREPARE create_user (text, text, text) AS
-          INSERT INTO users VALUES($1, $2, $3)
-          RETURNING *;
-        EXECUTE create_user($1, $2, $3)
+        INSERT INTO users VALUES($1, $2, $3)
+        RETURNING *
         "#;
         let id = Uuid::new_v4();
 

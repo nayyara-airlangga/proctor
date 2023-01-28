@@ -6,6 +6,6 @@ pub struct RegisterUserResponse {
     pub id: Uuid,
     #[schema(example = "example@email.com")]
     pub email: String,
-    pub created_at: chrono::DateTime<chrono::Local>,
-    pub updated_at: chrono::DateTime<chrono::Local>,
+    pub created_at: chrono::NaiveDateTime,
+    pub updated_at: chrono::NaiveDateTime,
 }
