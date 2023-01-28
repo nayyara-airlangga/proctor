@@ -5,6 +5,9 @@
 # Compilation targets
 /target
 
+# Generate key scripts
+**/*genkey.sh
+
 # Keys
 **/*keys.json
 **/*.pfx
