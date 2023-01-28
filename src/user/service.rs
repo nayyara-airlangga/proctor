@@ -52,12 +52,13 @@ impl UserService {
         body: RegisterUserRequest,
     ) -> Result<User, RegisterUserError> {
         body.validate().map_err(|err| {
-            RegisterUserError::BadRequestError(
-                err.into_errors()
-                    .into_keys()
-                    .map(|code| code.to_string())
-                    .collect::<Vec<String>>(),
-            )
+            RegisterUserError::BadRequestError({
+                let mut errors: Vec<String> = Vec::new();
+                err.field_errors()
+                    .into_values()
+                    .for_each(|err| err.into_iter().for_each(|err| errors.push(err.to_string())));
+                errors
+            })
         })?;
 
         let password_hash = self.generate_password_hash(body.password)?;
