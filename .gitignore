@@ -8,7 +8,8 @@
 # Generate key scripts
 **/*genkey.sh
 
-# Keys
+# Keys and configs
+**/*config.json
 **/*keys.json
 **/*.pfx
 **/*.pem
