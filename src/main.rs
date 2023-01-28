@@ -13,13 +13,8 @@ use modules::{
     docs::ApiDoc,
     index::health_check,
     trace::init_tracer,
-    user::{UserRepository, UserService},
+    user::{user_routes, UserRepository, UserService},
 };
-
-#[derive(Clone)]
-struct AppServices {
-    pub user_service: UserService,
-}
 
 #[tokio::main]
 async fn main() -> Result<(), axum::BoxError> {
@@ -34,19 +29,19 @@ async fn main() -> Result<(), axum::BoxError> {
     let user_repository = UserRepository::new(pool.clone());
     let user_service = UserService::new(user_repository.clone());
 
-    let services = AppServices { user_service };
+    let user_routes = user_routes(user_service.clone());
 
     let app = Router::new()
         .merge(SwaggerUi::new("/docs").url("/docs/openapi.json", ApiDoc::openapi()))
         .route("/", get(health_check))
+        .nest("/users", user_routes)
         .layer(
             TraceLayer::new_for_http()
                 .make_span_with(DefaultMakeSpan::new().include_headers(true))
                 .on_request(DefaultOnRequest::new().level(Level::INFO))
                 .on_response(DefaultOnResponse::new().level(Level::INFO))
                 .on_failure(DefaultOnFailure::new().level(Level::ERROR)),
-        )
-        .with_state(services);
+        );
 
     let host = var("HOST").unwrap_or_else(|_| "127.0.0.1".to_string());
     let port = var("PORT").unwrap_or_else(|_| "8000".to_string());
