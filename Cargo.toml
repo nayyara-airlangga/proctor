@@ -17,6 +17,7 @@ path = "src/main.rs"
 axum = "0.6.3"
 chrono = { version = "0.4.23", features = ["serde"] }
 dotenv = "0.15.0"
+fancy-regex = "0.11.0"
 hyper = { version = "0.14.23", features = ["full"] }
 jsonwebtoken = "8.2.0"
 serde = { version = "1.0.152", features = ["derive"] }
@@ -27,6 +28,7 @@ sqlx = { version = "0.6.2", features = [
   "migrate",
   "macros",
   "postgres",
+  "uuid",
 ] }
 tokio = { version = "1.24.2", features = ["full"] }
 tower = "0.4.13"
@@ -44,4 +46,5 @@ utoipa = { versino = "2.4.2", features = [
   "uuid",
 ] }
 utoipa-swagger-ui = { version = "3.0.1", features = ["axum"] }
-uuid = { version = "1.2.2", features = ["v4"] }
+uuid = { version = "1.2.2", features = ["v4", "serde"] }
+validator = { version = "0.16.0", features = ["derive"] }
